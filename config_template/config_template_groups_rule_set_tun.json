@@ -1,6 +1,7 @@
 {
   "log": {
-    "level": "info",
+    "level": "warn",
+    "output": "tun",
     "timestamp": true
   },
   "experimental": {
@@ -88,6 +89,14 @@
       "outbounds":[
         "auto",
         "direct",
+        "{all}"
+      ]
+    },
+    {
+      "tag":"69shuba",
+      "type":"selector",
+      "outbounds":[
+        "auto",
         "{all}"
       ]
     },
@@ -418,6 +427,15 @@
       {
         "ip_is_private": true,
         "outbound": "direct"
+      },
+      {
+      "domain_suffix": [
+        "69shuba.cx",
+        "69shuba.me",
+        "69yuedu.net",
+        "69shuba.com"
+      ],
+      "outbound": "69shuba"
       },
       {
         "rule_set": "geosite-openai",
