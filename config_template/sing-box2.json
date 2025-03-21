@@ -9,7 +9,7 @@
     "servers": [
       {
         "tag": "dns_proxy",
-        "address": "https://dns.google/dns-query",
+        "address": "tls://8.8.8.8",
         "address_resolver": "dns_resolver",
         "detour": "GLOBAL"
       },
@@ -44,6 +44,18 @@
       },
       {
         "clash_mode": "Global",
+        "server": "dns_proxy"
+      },
+      {
+        "domain": [
+          "69shuba.cx",
+          "69shuba.me",
+          "69yuedu.net",
+          "69shuba.com",
+          "twkan.com",
+          "101kan.com",
+          "69shux.co"
+        ],
         "server": "dns_proxy"
       },
       {

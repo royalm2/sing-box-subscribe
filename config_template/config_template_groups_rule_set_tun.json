@@ -49,6 +49,18 @@
         "server": "proxyDns"
       },
       {
+        "domain": [
+          "69shuba.cx",
+          "69shuba.me",
+          "69yuedu.net",
+          "69shuba.com",
+          "twkan.com",
+          "101kan.com",
+          "69shux.co"
+        ],
+        "server": "proxyDns"
+      },
+      {
         "rule_set": "geosite-geolocation-!cn",
         "server": "proxyDns"
       }
@@ -101,9 +113,33 @@
       ]
     },
     {
+      "tag":"auto",
+      "type":"urltest",
+      "outbounds":[
+        "{all}"
+      ],
+      "filter":[
+        {"action":"exclude","keywords":["网站|地址|剩余|过期|时间|有效"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 50
+    },
+    {
+      "tag":"Others",
+      "type":"selector",
+      "outbounds":[
+        "{all}"
+      ],
+      "filter":[
+        {"action":"exclude","keywords":["🇭🇰|HK|hk|香港|香|🇹🇼|TW|tw|台湾|台|🇸🇬|SG|sg|新加坡|狮|🇯🇵|JP|jp|日本|日|🇺🇸|US|us|美国|美"]}
+      ]
+    },
+    {
       "tag":"OpenAI",
       "type":"selector",
       "outbounds":[
+        "auto",
         "TaiWan",
         "Singapore",
         "Japan",
@@ -116,6 +152,7 @@
       "tag":"Google",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -128,6 +165,7 @@
       "tag":"Telegram",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -140,6 +178,7 @@
       "tag":"Twitter",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -152,6 +191,7 @@
       "tag":"Facebook",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -165,6 +205,7 @@
       "type":"selector",
       "outbounds":[
         "direct",
+        "auto",
         "HongKong",
         "TaiWan"
       ]
@@ -173,6 +214,7 @@
       "tag":"Bahamut",
       "type":"selector",
       "outbounds":[
+        "auto",
         "TaiWan",
         "Proxy"
       ]
@@ -181,6 +223,7 @@
       "tag":"Spotify",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -194,6 +237,7 @@
       "tag":"TikTok",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -206,6 +250,7 @@
       "tag":"Netflix",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -218,6 +263,7 @@
       "tag":"Disney+",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -231,6 +277,7 @@
       "type":"selector",
       "outbounds":[
         "direct",
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -244,6 +291,7 @@
       "type":"selector",
       "outbounds":[
         "direct",
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -257,6 +305,7 @@
       "type":"selector",
       "outbounds":[
         "direct",
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -269,6 +318,7 @@
       "tag":"Streaming",
       "type":"selector",
       "outbounds":[
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -281,6 +331,7 @@
       "tag":"Global",
       "type":"selector",
       "outbounds":[ 
+        "auto",
         "HongKong",
         "TaiWan",
         "Singapore",
@@ -349,29 +400,6 @@
       ]
     },
     {
-      "tag":"Others",
-      "type":"selector",
-      "outbounds":[
-        "{all}"
-      ],
-      "filter":[
-        {"action":"exclude","keywords":["🇭🇰|HK|hk|香港|香|🇹🇼|TW|tw|台湾|台|🇸🇬|SG|sg|新加坡|狮|🇯🇵|JP|jp|日本|日|🇺🇸|US|us|美国|美"]}
-      ]
-    },
-    {
-      "tag":"auto",
-      "type":"urltest",
-      "outbounds":[
-        "{all}"
-      ],
-      "filter":[
-        {"action":"exclude","keywords":["网站|地址|剩余|过期|时间|有效"]}
-      ],
-      "url": "http://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 50
-    },
-    {
       "type": "direct",
       "tag": "direct"
     }
@@ -433,7 +461,10 @@
         "69shuba.cx",
         "69shuba.me",
         "69yuedu.net",
-        "69shuba.com"
+        "69shuba.com",
+        "twkan.com",
+        "101kan.com",
+        "69shux.co"
       ],
       "outbound": "69shuba"
       },
