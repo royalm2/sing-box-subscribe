@@ -1,0 +1,448 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "warn",
+    "output": "1-box2.log",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns_proxy",
+        "address": "tls://8.8.8.8",
+        "address_resolver": "dns_resolver",
+        "detour": "GLOBAL"
+      },
+      {
+        "tag": "dns_direct",
+        "address": "quic://dns.alidns.com",
+        "address_resolver": "dns_resolver",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_resolver",
+        "address": "local",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "outbound": "any",
+        "server": "dns_resolver"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all",
+          "geosite-openai@ads"
+        ],
+        "server": "dns_block",
+        "disable_cache": true
+      },
+      {
+        "clash_mode": "Global",
+        "server": "dns_proxy"
+      },
+      {
+        "domain": [
+          "69shuba.cx",
+          "69shuba.me",
+          "69yuedu.net",
+          "69shuba.com",
+          "twkan.com",
+          "101kan.com",
+          "69shux.co"
+        ],
+        "server": "dns_proxy"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "clash_mode": "Direct"
+          },
+          {        
+            "rule_set": "geosite-geolocation-cn"
+          }
+        ],
+        "server": "dns_direct"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "rule_set": "geosite-geolocation-!cn",
+            "invert": true
+          },
+          {
+            "rule_set": "geoip-cn"
+          }
+        ],
+        "server": "dns_proxy"
+      }
+    ],
+    "strategy": "prefer_ipv4",
+    "independent_cache": true,
+    "client_subnet": "114.114.114.114/24"
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "time.apple.com",
+    "server_port": 123,
+    "interval": "30m",
+    "detour": "DIRECT"
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 2080
+    },
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "address": [
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "mtu": 9000,
+      "auto_route": true,
+      "strict_route": true,
+      "endpoint_independent_nat": false,
+      "stack": "system",
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "127.0.0.1",
+          "server_port": 2080
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "DIRECT"
+    },
+    {
+      "type": "selector",
+      "tag": "GLOBAL",
+      "outbounds": [
+        "DIRECT",
+        "♻️ 自动选择",
+        "{all}"
+      ],
+      "default": "♻️ 自动选择"
+    },
+    {
+      "type": "urltest",
+      "tag": "♻️ 自动选择",
+      "outbounds": [
+        "{all}"
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50
+    },
+    {
+      "type": "selector",
+      "tag": "📖 69书吧",
+      "outbounds": [
+        "GLOBAL",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "📲 电报信息",
+      "outbounds": [
+        "GLOBAL",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Ⓜ️ 微软服务",
+      "outbounds": [
+        "DIRECT",
+        "GLOBAL",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "🤖 ChatGPT",
+      "outbounds": [
+        "GLOBAL",
+        "{all}"
+      ]
+    }
+  ],
+  "route": {
+    "rule_set": [
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-category-ads-all.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-telegram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-telegram.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geoip-telegram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/telegram.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-youtube",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-youtube.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-openai@ads",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-openai@ads.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-openai",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-openai.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-github",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-github.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-google.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geoip-google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/google.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-microsoft",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-microsoft.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-geolocation-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-geolocation-cn.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-geolocation-!cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-geolocation-!cn.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-private",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-private.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-cn.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geoip-private",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geoip@rule-set/geoip-cn.srs",
+        "download_detour": "DIRECT",
+        "update_interval": "1d"
+      }
+    ],
+    "rules": [
+      {
+        "action": "resolve",
+        "strategy": "prefer_ipv4"
+      },
+      {
+        "action": "sniff"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "protocol": "dns"
+          },
+          {
+            "port": 53
+          }
+        ],
+        "action": "hijack-dns"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 853
+          },
+          {
+            "network": "udp",
+            "port": 443
+          },
+          {
+            "rule_set": [
+              "geosite-category-ads-all",
+              "geosite-openai@ads"
+            ]
+          }
+        ],
+        "action": "reject",
+        "method": "default"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "clash_mode": "Direct"
+          },
+          {
+            "ip_is_private": true
+          },
+          {
+            "protocol": "bittorrent"
+          },
+          {
+            "rule_set": [
+              "geosite-private",
+              "geosite-cn",
+              "geoip-private",
+              "geoip-cn"
+            ]
+          }
+        ],
+        "outbound": "DIRECT"
+      },
+      {
+      "domain": [
+        "69shuba.cx",
+        "69shuba.me",
+        "69yuedu.net",
+        "69shuba.com",
+        "twkan.com",
+        "101kan.com",
+        "69shux.co"
+      ],
+      "outbound": "📖 69书吧"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "clash_mode": "Global"
+          },
+          {
+            "rule_set": [
+              "geosite-youtube",
+              "geosite-github",
+              "geosite-google",
+              "geoip-google"
+            ]
+          }
+        ],
+        "outbound": "GLOBAL"
+      },
+      {
+        "rule_set": "geosite-microsoft",
+        "outbound": "Ⓜ️ 微软服务"
+      },
+      {
+        "rule_set": [
+          "geosite-telegram",
+          "geoip-telegram"
+        ],
+        "outbound": "📲 电报信息"
+      },
+      {
+        "rule_set": "geosite-openai",
+        "outbound": "🤖 ChatGPT"
+      }
+    ],
+    "final": "GLOBAL",
+    "auto_detect_interface": true,
+    "override_android_vpn": true
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "cache_id": "box2",
+      "store_rdrc": true
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "ui",
+      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip",
+      "external_ui_download_detour": "GLOBAL",
+      "default_mode": "Enhanced"
+    }
+  }
+}
