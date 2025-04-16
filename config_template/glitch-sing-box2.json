@@ -8,7 +8,7 @@
   "dns": {
     "servers": [
       {
-        "type": "h3",
+        "type": "https",
         "tag": "dns_proxy",
         "detour": "GLOBAL-DNS",
         "domain_resolver": "dns_resolver",
