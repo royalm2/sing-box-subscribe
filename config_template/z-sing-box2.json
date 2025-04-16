@@ -1,8 +1,8 @@
 {
   "log": {
     "disabled": false,
-    "level": "warn",
-    "output": "1-box.log",
+    "level": "debug",
+    "output": "1-box2.log",
     "timestamp": true
   },
   "dns": {
