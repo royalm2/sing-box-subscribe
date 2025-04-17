@@ -1,18 +1,18 @@
 {
   "log": {
     "disabled": false,
-    "level": "warn",
-    "output": "1-box2.log",
+    "level": "debug",
+    "output": "debug-box2.log",
     "timestamp": true
   },
   "dns": {
     "servers": [
       {
-        "type": "https",
+        "type": "tls",
         "tag": "dns_proxy",
         "detour": "GLOBAL-DNS",
         "domain_resolver": "dns_resolver",
-        "server": "cloudflare-dns.com"
+        "server": "dns.google"
       },
       {
         "type": "quic",

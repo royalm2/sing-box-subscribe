@@ -2,17 +2,17 @@
   "log": {
     "disabled": false,
     "level": "warn",
-    "output": "glbox.log",
+    "output": "debug-glbox.log",
     "timestamp": true
   },
   "dns": {
     "servers": [
       {
-        "type": "https",
+        "type": "tls",
         "tag": "dns_proxy",
         "detour": "GLOBAL-DNS",
         "domain_resolver": "dns_resolver",
-        "server": "cloudflare-dns.com"
+        "server": "dns.google"
       },
       {
         "type": "quic",
