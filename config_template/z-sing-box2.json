@@ -7,11 +7,11 @@
   "dns": {
     "servers": [
       {
-        "type": "tls",
+        "type": "h3",
         "tag": "dns_proxy",
         "detour": "GLOBAL-DNS",
         "domain_resolver": "dns_resolver",
-        "server": "dns.google"
+        "server": "cloudflare-dns.com"
       },
       {
         "type": "h3",
