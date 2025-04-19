@@ -7,11 +7,11 @@
   "dns": {
     "servers": [
       {
-        "type": "tls",
+        "type": "h3",
         "tag": "dns_proxy",
-        "detour": "GLOBAL-DNS",
+        "detour": "GLOBAL",
         "domain_resolver": "dns_resolver",
-        "server": "dns.google"
+        "server": "cloudflare-dns.com"
       },
       {
         "type": "h3",
@@ -71,7 +71,7 @@
         "server": "dns_proxy"
       }
     ],
-    "strategy": "ipv4_only",
+    "strategy": "prefer_ipv6",
     "independent_cache": true,
     "client_subnet": "211.138.16.0/20"
   },
@@ -92,7 +92,8 @@
       "tag": "tun-in",
       "mtu": 9000,
       "address": [
-        "172.18.0.1/30"
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
       ],
       "auto_route": true,
       "strict_route": true,
@@ -126,7 +127,6 @@
       "outbounds": [
         "DIRECT",
         "♻️ 自动选择",
-        "GLOBAL-DNS",
         "{all}"
       ],
       "default": "♻️ 自动选择"
@@ -136,22 +136,6 @@
       "tag": "♻️ 自动选择",
       "outbounds": [
         "{all}"
-      ],
-      "filter":[
-        {"action":"exclude","keywords":["glitch|Glitch"]}
-      ],
-      "url": "http://www.gstatic.com/generate_204",
-      "interval": "5m0s",
-      "tolerance": 50
-    },
-    {
-      "type": "urltest",
-      "tag": "GLOBAL-DNS",
-      "outbounds": [
-        "{all}"
-      ],
-      "filter":[
-        {"action":"include","keywords":["glitch|Glitch"]}
       ],
       "url": "http://www.gstatic.com/generate_204",
       "interval": "5m0s",
