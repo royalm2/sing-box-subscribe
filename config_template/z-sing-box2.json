@@ -1,7 +1,7 @@
 {
   "log": {
     "disabled": false,
-    "level": "debug",
+    "level": "warn",
     "output": "debug-box2.log",
     "timestamp": true
   },
@@ -73,7 +73,7 @@
         "server": "dns_proxy"
       }
     ],
-    "strategy": "prefer_ipv4",
+    "strategy": "ipv4_only",
     "independent_cache": true,
     "client_subnet": "114.114.114.114/24"
   },
@@ -95,8 +95,7 @@
       "tag": "tun-in",
       "mtu": 9000,
       "address": [
-        "172.18.0.1/30",
-        "fdfe:dcba:9876::1/126"
+        "172.18.0.1/30"
       ],
       "auto_route": true,
       "strict_route": true,
