@@ -224,12 +224,6 @@
         "action": "reject"
       },
       {
-        "rule_set": [
-          "geoip-cloudflare"
-        ],
-        "outbound": "GLITCH"
-      },
-      {
       "domain": [
         "69shuba.cx",
         "69shuba.me",
