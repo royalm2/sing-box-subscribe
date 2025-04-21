@@ -41,15 +41,16 @@
         "action": "reject"
       },
       {
-        "domain": [
-          "69shuba.cx",
-          "69shuba.me",
-          "69yuedu.net",
-          "69shuba.com",
-          "twkan.com",
-          "101kan.com",
-          "69shux.co"
-        ],
+        "domain_suffix": [
+        "69shuba.cx",
+        "69shuba.me",
+        "69yuedu.net",
+        "69shuba.com",
+        "twkan.com",
+        "101kan.com",
+        "101kanshu.com",
+        "69shux.co"
+      ],
         "server": "dns_proxy"
       },
       {
@@ -223,13 +224,14 @@
         "action": "reject"
       },
       {
-      "domain": [
+      "domain_suffix": [
         "69shuba.cx",
         "69shuba.me",
         "69yuedu.net",
         "69shuba.com",
         "twkan.com",
         "101kan.com",
+        "101kanshu.com",
         "69shux.co"
       ],
       "outbound": "📲 69shuba"
