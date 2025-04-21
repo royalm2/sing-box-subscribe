@@ -128,22 +128,32 @@
       "outbounds": [
         "DIRECT",
         "♻️ 自动选择",
+        "GLITCH",
         "{all}"
       ],
       "default": "♻️ 自动选择"
-    },
-    {
-      "type": "selector",
-      "tag": "GLOBAL-DNS",
-      "outbounds": [
-        "{all}"
-      ]
     },
     {
       "type": "urltest",
       "tag": "♻️ 自动选择",
       "outbounds": [
         "{all}"
+      ]
+      "filter":[
+        {"action":"exclude","keywords":["glitch|Glitch"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
+    },
+    {
+      "type": "urltest",
+      "tag": "GLITCH",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter":[
+        {"action":"include","keywords":["glitch|Glitch"]}
       ],
       "url": "http://www.gstatic.com/generate_204",
       "interval": "5m0s",
@@ -151,19 +161,10 @@
     },
     {
       "type": "selector",
-      "tag": "GLITCH",
-      "outbounds": [
-        "{all}"
-      ],
-      "filter":[
-        {"action":"include","keywords":["glitch|Glitch"]}
-      ]
-    },
-    {
-      "type": "selector",
       "tag": "📲 69shuba",
       "outbounds": [
-        "GLOBAL",
+        "GLITCH",
+        "♻️ 自动选择",
         "{all}"
       ]
     },

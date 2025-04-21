@@ -162,7 +162,8 @@
       "type": "selector",
       "tag": "📲 69shuba",
       "outbounds": [
-        "GLOBAL",
+        "GLITCH",
+        "♻️ 自动选择",
         "{all}"
       ]
     },
