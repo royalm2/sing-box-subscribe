@@ -9,7 +9,7 @@
       {
         "type": "h3",
         "tag": "dns_proxy",
-        "detour": "GLOBAL-DNS",
+        "detour": "GLITCH",
         "domain_resolver": "dns_resolver",
         "server": "cloudflare-dns.com"
       },
@@ -126,16 +126,7 @@
       "outbounds": [
         "DIRECT",
         "♻️ 自动选择",
-        "{all}"
-      ],
-      "default": "♻️ 自动选择"
-    },
-    {
-      "type": "selector",
-      "tag": "GLOBAL-DNS",
-      "outbounds": [
-        "DIRECT",
-        "♻️ 自动选择",
+        "GLITCH",
         "{all}"
       ],
       "default": "♻️ 自动选择"
@@ -145,6 +136,22 @@
       "tag": "♻️ 自动选择",
       "outbounds": [
         "{all}"
+      ],
+      "filter":[
+        {"action":"exclude","keywords":["glitch|Glitch"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
+    },
+    {
+      "type": "urltest",
+      "tag": "GLITCH",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter":[
+        {"action":"include","keywords":["glitch|Glitch"]}
       ],
       "url": "http://www.gstatic.com/generate_204",
       "interval": "5m0s",
@@ -214,6 +221,12 @@
           "geosite-openai@ads"
         ],
         "action": "reject"
+      },
+      {
+        "rule_set": [
+          "geoip-cloudflare"
+        ],
+        "outbound": "GLITCH"
       },
       {
       "domain": [
@@ -298,7 +311,15 @@
         "type": "remote",
         "tag": "geoip-telegram",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.srs",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/telegram.srs",
+        "download_detour": "GLOBAL",
+        "update_interval": "24h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-cloudflare",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/cloudflare.srs",
         "download_detour": "GLOBAL",
         "update_interval": "24h0m0s"
       },

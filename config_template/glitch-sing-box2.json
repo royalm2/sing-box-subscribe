@@ -9,7 +9,7 @@
       {
         "type": "h3",
         "tag": "dns_proxy",
-        "detour": "GLOBAL-DNS",
+        "detour": "GLITCH",
         "domain_resolver": "dns_resolver",
         "server": "cloudflare-dns.com"
       },
@@ -126,7 +126,7 @@
       "outbounds": [
         "DIRECT",
         "♻️ 自动选择",
-        "GLOBAL-DNS",
+        "GLITCH",
         "{all}"
       ],
       "default": "♻️ 自动选择"
@@ -146,7 +146,7 @@
     },
     {
       "type": "urltest",
-      "tag": "GLOBAL-DNS",
+      "tag": "GLITCH",
       "outbounds": [
         "{all}"
       ],
@@ -221,6 +221,12 @@
           "geosite-openai@ads"
         ],
         "action": "reject"
+      },
+      {
+        "rule_set": [
+          "geoip-cloudflare"
+        ],
+        "outbound": "GLITCH"
       },
       {
       "domain": [
@@ -303,9 +309,17 @@
       },
       {
         "type": "remote",
+        "tag": "geoip-cloudflare",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/cloudflare.srs",
+        "download_detour": "GLOBAL",
+        "update_interval": "24h0m0s"
+      },
+      {
+        "type": "remote",
         "tag": "geoip-telegram",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.srs",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/telegram.srs",
         "download_detour": "GLOBAL",
         "update_interval": "24h0m0s"
       },
