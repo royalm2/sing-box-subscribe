@@ -262,15 +262,6 @@
       {
         "rule_set": "geosite-openai",
         "outbound": "🤖 ChatGPT"
-      },
-      {
-        "action": "resolve"
-      },
-      {
-        "rule_set": [
-          "geoip-cloudflare"
-        ],
-        "outbound": "GLITCH"
       }
     ],
     "rule_set": [
