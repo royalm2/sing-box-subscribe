@@ -138,7 +138,7 @@
       "tag": "♻️ 自动选择",
       "outbounds": [
         "{all}"
-      ]
+      ],
       "filter":[
         {"action":"exclude","keywords":["glitch|Glitch"]}
       ],
