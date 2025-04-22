@@ -9,7 +9,7 @@
       {
         "type": "h3",
         "tag": "dns_proxy",
-        "detour": "GLITCH",
+        "detour": "PROXY_DNS",
         "domain_resolver": "dns_resolver",
         "server": "cloudflare-dns.com"
       },
@@ -42,15 +42,15 @@
       },
       {
         "domain_suffix": [
-        "69shuba.cx",
-        "69shuba.me",
-        "69yuedu.net",
-        "69shuba.com",
-        "twkan.com",
-        "101kan.com",
-        "101kanshu.com",
-        "69shux.co"
-      ],
+          "69shuba.cx",
+          "69shuba.me",
+          "69yuedu.net",
+          "69shuba.com",
+          "twkan.com",
+          "101kan.com",
+          "101kanshu.com",
+          "69shux.co"
+        ],
         "server": "dns_proxy"
       },
       {
@@ -133,30 +133,13 @@
       "default": "♻️ 自动选择"
     },
     {
-      "type": "urltest",
-      "tag": "♻️ 自动选择",
+      "type": "selector",
+      "tag": "PROXY_DNS",
       "outbounds": [
+        "GLITCH",
+        "♻️ 自动选择",
         "{all}"
-      ],
-      "filter":[
-        {"action":"exclude","keywords":["glitch|Glitch"]}
-      ],
-      "url": "http://www.gstatic.com/generate_204",
-      "interval": "5m0s",
-      "tolerance": 50
-    },
-    {
-      "type": "urltest",
-      "tag": "GLITCH",
-      "outbounds": [
-        "{all}"
-      ],
-      "filter":[
-        {"action":"include","keywords":["glitch|Glitch"]}
-      ],
-      "url": "http://www.gstatic.com/generate_204",
-      "interval": "5m0s",
-      "tolerance": 50
+      ]
     },
     {
       "type": "selector",
@@ -182,6 +165,32 @@
         "PROXY",
         "{all}"
       ]
+    },
+    {
+      "type": "urltest",
+      "tag": "♻️ 自动选择",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter":[
+        {"action":"exclude","keywords":["glitch|Glitch"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
+    },
+    {
+      "type": "urltest",
+      "tag": "GLITCH",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter":[
+        {"action":"include","keywords":["glitch|Glitch"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
     }
   ],
   "route": {
@@ -306,17 +315,17 @@
       },
       {
         "type": "remote",
-        "tag": "geoip-telegram",
+        "tag": "geoip-cloudflare",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/telegram.srs",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/cloudflare.srs",
         "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
         "type": "remote",
-        "tag": "geoip-cloudflare",
+        "tag": "geoip-telegram",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/cloudflare.srs",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/telegram.srs",
         "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
