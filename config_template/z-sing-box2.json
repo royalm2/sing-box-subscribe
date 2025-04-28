@@ -7,17 +7,17 @@
   "dns": {
     "servers": [
       {
-        "type": "h3",
+        "type": "tls",
         "tag": "dns_proxy",
         "detour": "PROXY_DNS",
         "domain_resolver": "dns_resolver",
-        "server": "cloudflare-dns.com"
+        "server": "1.1.1.1"
       },
       {
-        "type": "h3",
+        "type": "tls",
         "tag": "dns_direct",
         "domain_resolver": "dns_resolver",
-        "server": "dns.alidns.com"
+        "server": "223.5.5.5"
       },
       {
         "type": "local",
@@ -79,7 +79,8 @@
   "ntp": {
     "enabled": true,
     "interval": "30m0s",
-    "server": "time.apple.com"
+    "server": "time.apple.com",
+    "server_port": 123
   },
   "inbounds": [
     {
@@ -91,22 +92,12 @@
     {
       "type": "tun",
       "tag": "tun-in",
-      "mtu": 9000,
       "address": [
         "172.18.0.1/30"
       ],
       "auto_route": true,
       "strict_route": true,
-      "route_address": [
-        "0.0.0.0/1",
-        "128.0.0.0/1",
-        "::/1",
-        "8000::/1"
-      ],
-      "route_exclude_address": [
-        "192.168.0.0/16",
-        "fc00::/7"
-      ],
+      "stack": "system",
       "platform": {
         "http_proxy": {
           "enabled": true,
@@ -151,6 +142,19 @@
       ]
     },
     {
+      "type": "urltest",
+      "tag": "♻️ 自动选择",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter":[
+        {"action":"exclude","keywords":["glitch|Glitch"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
+    },
+    {
       "type": "selector",
       "tag": "📲 电报信息",
       "outbounds": [
@@ -165,19 +169,6 @@
         "PROXY",
         "{all}"
       ]
-    },
-    {
-      "type": "urltest",
-      "tag": "♻️ 自动选择",
-      "outbounds": [
-        "{all}"
-      ],
-      "filter":[
-        {"action":"exclude","keywords":["glitch|Glitch"]}
-      ],
-      "url": "http://www.gstatic.com/generate_204",
-      "interval": "5m0s",
-      "tolerance": 50
     },
     {
       "type": "urltest",
@@ -201,10 +192,6 @@
       },
       {
         "action": "sniff"
-      },
-      {
-        "port": 53,
-        "action": "hijack-dns"
       },
       {
         "protocol": "dns",
@@ -234,19 +221,6 @@
         "action": "reject"
       },
       {
-      "domain_suffix": [
-        "69shuba.cx",
-        "69shuba.me",
-        "69yuedu.net",
-        "69shuba.com",
-        "twkan.com",
-        "101kan.com",
-        "101kanshu.com",
-        "69shux.co"
-      ],
-      "outbound": "📲 69shuba"
-      },
-      {
         "domain": "services.googleapis.cn",
         "outbound": "PROXY"
       },
@@ -259,6 +233,19 @@
           "geoip-cn"
         ],
         "outbound": "DIRECT"
+      },
+      {
+      "domain_suffix": [
+        "69shuba.cx",
+        "69shuba.me",
+        "69yuedu.net",
+        "69shuba.com",
+        "twkan.com",
+        "101kan.com",
+        "101kanshu.com",
+        "69shux.co"
+      ],
+      "outbound": "📲 69shuba"
       },
       {
         "rule_set": [
@@ -325,7 +312,7 @@
         "type": "remote",
         "tag": "geoip-telegram",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/telegram.srs",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.srs",
         "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
@@ -383,7 +370,7 @@
     "clash_api": {
       "external_controller": "127.0.0.1:9090",
       "external_ui": "ui",
-      "external_ui_download_url": "https://github.com/MetaCubeX/yacd/archive/gh-pages.zip",
+      "external_ui_download_url": "https://github.com/Zephyruso/zashboard/archive/gh-pages.zip",
       "external_ui_download_detour": "PROXY",
       "default_mode": "Enhanced"
     }
