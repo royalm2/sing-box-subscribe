@@ -7,17 +7,17 @@
   "dns": {
     "servers": [
       {
-        "type": "tls",
+        "type": "h3",
         "tag": "dns_proxy",
         "detour": "PROXY_DNS",
         "domain_resolver": "dns_resolver",
-        "server": "1.1.1.1"
+        "server": "cloudflare-dns.com"
       },
       {
-        "type": "tls",
+        "type": "h3",
         "tag": "dns_direct",
         "domain_resolver": "dns_resolver",
-        "server": "223.5.5.5"
+        "server": "dns.alidns.com"
       },
       {
         "type": "local",
