@@ -156,6 +156,15 @@
     },
     {
       "type": "selector",
+      "tag": "📲 github",
+      "outbounds": [
+        "GLITCH",
+        "♻️ 自动选择",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
       "tag": "📲 电报信息",
       "outbounds": [
         "PROXY",
@@ -249,6 +258,12 @@
       },
       {
         "rule_set": [
+          "geosite-github"
+        ],
+        "outbound": "📲 github"
+      },
+      {
+        "rule_set": [
           "geosite-telegram",
           "geoip-telegram"
         ],
@@ -260,6 +275,14 @@
       }
     ],
     "rule_set": [
+      {
+        "type": "remote",
+        "tag": "geosite-github",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-github.srs",
+        "download_detour": "PROXY",
+        "update_interval": "24h0m0s"
+      },
       {
         "type": "remote",
         "tag": "geosite-category-ads-all",
