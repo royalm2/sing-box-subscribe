@@ -1,7 +1,7 @@
 {
   "log": {
-    "level": "debug",
-    "output": "1-sb12.log",
+    "level": "warn",
+    "output": "sb12.log",
     "timestamp": true
   },
   "experimental": {

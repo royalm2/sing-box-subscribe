@@ -1,6 +1,6 @@
 {
   "log": {
-    "level": "debug",
+    "level": "warn",
     "output": "1-tun.log",
     "timestamp": true
   },
