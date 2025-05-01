@@ -117,8 +117,8 @@
       "tag": "PROXY",
       "outbounds": [
         "DIRECT",
-        "♻️ 自动选择",
         "GLITCH",
+        "♻️ 自动选择",
         "{all}"
       ],
       "default": "♻️ 自动选择"

@@ -49,13 +49,14 @@
         "server": "google"
       },
       {
-        "domain": [
+        "domain_suffix": [
           "69shuba.cx",
           "69shuba.me",
           "69yuedu.net",
           "69shuba.com",
           "twkan.com",
           "101kan.com",
+          "101kanshu.com",
           "69shux.co"
         ],
         "server": "google"
@@ -490,13 +491,14 @@
         "outbound": "direct"
       },
       {
-      "domain": [
+      "domain_suffix": [
         "69shuba.cx",
         "69shuba.me",
         "69yuedu.net",
         "69shuba.com",
         "twkan.com",
         "101kan.com",
+        "101kanshu.com",
         "69shux.co"
       ],
       "outbound": "69shuba"
