@@ -14,7 +14,7 @@
         "server": "cloudflare-dns.com"
       },
       {
-        "type": "tls",
+        "type": "h3",
         "tag": "dns_direct",
         "domain_resolver": "dns_resolver",
         "server": "dns.alidns.com"
@@ -93,7 +93,8 @@
       "type": "tun",
       "tag": "tun-in",
       "address": [
-        "172.18.0.1/30"
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
       ],
       "auto_route": true,
       "strict_route": true,
@@ -117,29 +118,11 @@
       "tag": "PROXY",
       "outbounds": [
         "DIRECT",
-        "GLITCH",
         "♻️ 自动选择",
+        "♻️ GLITCH",
         "{all}"
       ],
       "default": "♻️ 自动选择"
-    },
-    {
-      "type": "selector",
-      "tag": "PROXY_DNS",
-      "outbounds": [
-        "GLITCH",
-        "♻️ 自动选择",
-        "{all}"
-      ]
-    },
-    {
-      "type": "selector",
-      "tag": "📲 69shuba",
-      "outbounds": [
-        "GLITCH",
-        "♻️ 自动选择",
-        "{all}"
-      ]
     },
     {
       "type": "urltest",
@@ -155,10 +138,41 @@
       "tolerance": 50
     },
     {
-      "type": "selector",
-      "tag": "📲 github",
+      "type": "urltest",
+      "tag": "♻️ GLITCH",
       "outbounds": [
-        "GLITCH",
+        "{all}"
+      ],
+      "filter":[
+        {"action":"include","keywords":["glitch|Glitch"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
+    },
+    {
+      "type": "selector",
+      "tag": "PROXY_DNS",
+      "outbounds": [
+        "♻️ GLITCH",
+        "♻️ 自动选择",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "📲 69shuba",
+      "outbounds": [
+        "♻️ GLITCH",
+        "♻️ 自动选择",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "📲 IPINCF",
+      "outbounds": [
+        "♻️ GLITCH",
         "♻️ 自动选择",
         "{all}"
       ]
@@ -178,19 +192,6 @@
         "PROXY",
         "{all}"
       ]
-    },
-    {
-      "type": "urltest",
-      "tag": "GLITCH",
-      "outbounds": [
-        "{all}"
-      ],
-      "filter":[
-        {"action":"include","keywords":["glitch|Glitch"]}
-      ],
-      "url": "http://www.gstatic.com/generate_204",
-      "interval": "5m0s",
-      "tolerance": 50
     }
   ],
   "route": {
@@ -258,12 +259,6 @@
       },
       {
         "rule_set": [
-          "geosite-github"
-        ],
-        "outbound": "📲 github"
-      },
-      {
-        "rule_set": [
           "geosite-telegram",
           "geoip-telegram"
         ],
@@ -272,6 +267,20 @@
       {
         "rule_set": "geosite-openai",
         "outbound": "🤖 ChatGPT"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "rule_set": "geosite-cloudflare",
+            "invert": true
+          },
+          {
+            "rule_set": "geoip-cloudflare"
+          }
+        ],
+        "outbound": "📲 IPINCF"
       }
     ],
     "rule_set": [
@@ -309,25 +318,9 @@
       },
       {
         "type": "remote",
-        "tag": "geosite-github",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-github.srs",
-        "download_detour": "PROXY",
-        "update_interval": "24h0m0s"
-      },
-      {
-        "type": "remote",
         "tag": "geosite-microsoft@cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-microsoft@cn.srs",
-        "download_detour": "PROXY",
-        "update_interval": "24h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geoip-cloudflare",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/nekolsd/geoip/refs/heads/release/srs/cloudflare.srs",
         "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
@@ -376,6 +369,22 @@
         "tag": "geoip-cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+        "download_detour": "PROXY",
+        "update_interval": "24h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-cloudflare",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cloudflare.srs",
+        "download_detour": "PROXY",
+        "update_interval": "24h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-cloudflare",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cloudflare.srs",
         "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       }

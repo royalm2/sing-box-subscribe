@@ -9,7 +9,7 @@
       {
         "type": "h3",
         "tag": "dns_proxy",
-        "detour": "GLOBAL",
+        "detour": "PROXY_DNS",
         "domain_resolver": "dns_resolver",
         "server": "cloudflare-dns.com"
       },
@@ -41,6 +41,19 @@
         "action": "reject"
       },
       {
+        "domain_suffix": [
+          "69shuba.cx",
+          "69shuba.me",
+          "69yuedu.net",
+          "69shuba.com",
+          "twkan.com",
+          "101kan.com",
+          "101kanshu.com",
+          "69shux.co"
+        ],
+        "server": "dns_proxy"
+      },
+      {
         "rule_set": "geosite-geolocation-cn",
         "server": "dns_direct"
       },
@@ -59,7 +72,7 @@
         "server": "dns_proxy"
       }
     ],
-    "strategy": "prefer_ipv6",
+    "strategy": "ipv4_only",
     "independent_cache": true,
     "client_subnet": "211.138.16.0/20"
   },
@@ -102,7 +115,7 @@
     },
     {
       "type": "selector",
-      "tag": "GLOBAL",
+      "tag": "PROXY",
       "outbounds": [
         "DIRECT",
         "♻️ 自动选择",
@@ -122,9 +135,33 @@
     },
     {
       "type": "selector",
+      "tag": "PROXY_DNS",
+      "outbounds": [
+        "♻️ 自动选择",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "📲 69shuba",
+      "outbounds": [
+        "♻️ 自动选择",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "📲 IPINCF",
+      "outbounds": [
+        "♻️ 自动选择",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
       "tag": "📲 电报信息",
       "outbounds": [
-        "GLOBAL",
+        "PROXY",
         "{all}"
       ]
     },
@@ -132,7 +169,7 @@
       "type": "selector",
       "tag": "🤖 ChatGPT",
       "outbounds": [
-        "GLOBAL",
+        "PROXY",
         "{all}"
       ]
     }
@@ -164,7 +201,7 @@
       },
       {
         "clash_mode": "Global",
-        "outbound": "GLOBAL"
+        "outbound": "PROXY"
       },
       {
         "rule_set": [
@@ -175,7 +212,7 @@
       },
       {
         "domain": "services.googleapis.cn",
-        "outbound": "GLOBAL"
+        "outbound": "PROXY"
       },
       {
         "rule_set": [
@@ -188,6 +225,19 @@
         "outbound": "DIRECT"
       },
       {
+      "domain_suffix": [
+        "69shuba.cx",
+        "69shuba.me",
+        "69yuedu.net",
+        "69shuba.com",
+        "twkan.com",
+        "101kan.com",
+        "101kanshu.com",
+        "69shux.co"
+      ],
+      "outbound": "📲 69shuba"
+      },
+      {
         "rule_set": [
           "geosite-telegram",
           "geoip-telegram"
@@ -197,6 +247,20 @@
       {
         "rule_set": "geosite-openai",
         "outbound": "🤖 ChatGPT"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "rule_set": "geosite-cloudflare",
+            "invert": true
+          },
+          {
+            "rule_set": "geoip-cloudflare"
+          }
+        ],
+        "outbound": "📲 IPINCF"
       }
     ],
     "rule_set": [
@@ -205,7 +269,7 @@
         "tag": "geosite-category-ads-all",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -213,7 +277,7 @@
         "tag": "geosite-geolocation-!cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-!cn.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -221,7 +285,7 @@
         "tag": "geosite-geolocation-cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-cn.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -229,7 +293,7 @@
         "tag": "geosite-openai@ads",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-openai@ads.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -237,7 +301,7 @@
         "tag": "geosite-microsoft@cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-microsoft@cn.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -245,7 +309,7 @@
         "tag": "geoip-telegram",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -253,7 +317,7 @@
         "tag": "geosite-telegram",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-telegram.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -261,7 +325,7 @@
         "tag": "geosite-openai",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-openai.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -269,7 +333,7 @@
         "tag": "geosite-private",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-private.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -277,7 +341,7 @@
         "tag": "geosite-cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       },
       {
@@ -285,11 +349,27 @@
         "tag": "geoip-cn",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
-        "download_detour": "GLOBAL",
+        "download_detour": "PROXY",
+        "update_interval": "24h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-cloudflare",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cloudflare.srs",
+        "download_detour": "PROXY",
+        "update_interval": "24h0m0s"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-cloudflare",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cloudflare.srs",
+        "download_detour": "PROXY",
         "update_interval": "24h0m0s"
       }
     ],
-    "final": "GLOBAL",
+    "final": "PROXY",
     "auto_detect_interface": true,
     "override_android_vpn": true,
     "default_domain_resolver": "dns_resolver"
@@ -303,7 +383,7 @@
       "external_controller": "127.0.0.1:9090",
       "external_ui": "ui",
       "external_ui_download_url": "https://github.com/Zephyruso/zashboard/archive/gh-pages.zip",
-      "external_ui_download_detour": "GLOBAL",
+      "external_ui_download_detour": "PROXY",
       "default_mode": "Enhanced"
     }
   }
