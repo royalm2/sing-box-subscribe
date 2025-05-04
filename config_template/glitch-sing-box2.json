@@ -281,6 +281,10 @@
           }
         ],
         "outbound": "📲 IPINCF"
+      },
+      {
+        "rule_set": "geosite-cloudflare",
+        "outbound": "📲 IPINCF"
       }
     ],
     "rule_set": [
