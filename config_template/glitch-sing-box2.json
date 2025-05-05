@@ -235,6 +235,14 @@
         "outbound": "PROXY"
       },
       {
+        "domain_suffix": [
+          "ghproxy.net",
+          "ghgh.cf",
+          "ghgh.gq"
+        ],
+        "outbound": "DIRECT"
+      },
+      {
         "rule_set": [
           "geosite-geolocation-cn",
           "geosite-microsoft@cn",

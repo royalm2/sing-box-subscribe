@@ -454,6 +454,14 @@
         "outbound": "direct"
       },
       {
+        "domain_suffix": [
+          "ghproxy.net",
+          "ghgh.cf",
+          "ghgh.gq"
+        ],
+        "outbound": "direct"
+      },
+      {
         "ip_is_private": true,
         "outbound": "direct"
       },
