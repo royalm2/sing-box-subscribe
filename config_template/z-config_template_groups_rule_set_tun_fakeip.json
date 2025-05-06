@@ -481,18 +481,11 @@
       },
       {
         "domain": [
+          "ghproxy.net",
           "clash.razord.top",
           "yacd.metacubex.one",
           "yacd.haishan.me",
           "d.metacubex.one"
-        ],
-        "outbound": "direct"
-      },
-      {
-        "domain_suffix": [
-          "ghproxy.net",
-          "ghgh.cf",
-          "ghgh.gq"
         ],
         "outbound": "direct"
       },

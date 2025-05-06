@@ -236,9 +236,7 @@
       },
       {
         "domain_suffix": [
-          "ghproxy.net",
-          "ghgh.cf",
-          "ghgh.gq"
+          "ghproxy.net"
         ],
         "outbound": "DIRECT"
       },
