@@ -1,0 +1,438 @@
+{
+  "log": {
+    "level": "error",
+    "output": "box.log",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "type": "h3",
+        "tag": "Remote",
+        "detour": "Manual",
+        "domain_resolver": "Hosts",
+        "server": "cloudflare-dns.com"
+      },
+      {
+        "type": "h3",
+        "tag": "Remote-google",
+        "detour": "Manual",
+        "domain_resolver": "Hosts",
+        "server": "dns.google"
+      },
+      {
+        "type": "h3",
+        "tag": "Local",
+        "domain_resolver": "Hosts",
+        "server": "dns.alidns.com"
+      },
+      {
+        "type": "hosts",
+        "tag": "Hosts",
+        "predefined": {
+          "dns.alidns.com": [
+            "223.5.5.5",
+            "223.6.6.6",
+            "2400:3200::1",
+            "2400:3200:baba::1"
+          ],
+          "cloudflare-dns.com": [
+            "1.1.1.1",
+            "1.0.0.1",
+            "104.16.248.249",
+            "104.16.249.249",
+            "2606:4700:4700::1111",
+            "2606:4700:4700::1001",
+            "2606:4700::6810:f8f9",
+            "2606:4700::6810:f9f9"
+          ],
+          "dns.google": [
+            "8.8.8.8",
+            "8.8.4.4"
+          ]
+        }
+      },
+      {
+        "type": "fakeip",
+        "tag": "FakeIP",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      }
+    ],
+    "rules": [
+      {
+        "clash_mode": "Global",
+        "server": "Remote"
+      },
+      {
+        "clash_mode": "Direct",
+        "server": "Local"
+      },
+      {
+        "query_type": [
+          "HTTPS",
+          "SVCB"
+        ],
+        "action": "reject"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all",
+          "geosite-openai@ads"
+        ],
+        "action": "reject"
+      },
+      {
+        "rule_set": "geosite-bilibili@!cn",
+        "server": "FakeIP",
+        "rewrite_ttl": 1
+      },
+      {
+        "domain_suffix": [
+          "ghproxy.net",
+          "tt050.space",
+          "tz034.space",
+          "tztz074.space",
+          "775022.xyz",
+          "m.libahao.com"
+        ],
+        "server": "Local"
+      },
+      {
+        "rule_set": "geosite-geolocation-cn",
+        "server": "Local"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "FakeIP",
+        "rewrite_ttl": 1
+      }
+    ],
+    "strategy": "prefer_ipv4",
+    "independent_cache": true,
+    "client_subnet": "202.96.0.0/11"
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "ntp.ntsc.ac.cn",
+    "server_port": 123
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "address": [
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "auto_route": true,
+      "strict_route": true,
+      "stack": "mixed",
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "127.0.0.1",
+          "server_port": 2080
+        }
+      }
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 2080
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "Direct"
+    },
+    {
+      "type": "selector",
+      "tag": "Manual",
+      "outbounds": [
+        "Direct",
+        "Automatic",
+        "{all}"
+      ],
+      "default": "Automatic"
+    },
+    {
+      "type": "urltest",
+      "tag": "Automatic",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "tshu13.doh"
+          ]
+        }
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m0s",
+      "tolerance": 50
+    },
+    {
+      "type": "selector",
+      "tag": "Bilibili@!cn",
+      "outbounds": [
+        "Manual",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Microsoft",
+      "outbounds": [
+        "Manual",
+        "Direct",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Google",
+      "outbounds": [
+        "Manual",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Telegram",
+      "outbounds": [
+        "Manual",
+        "{all}"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "ChatGPT",
+      "outbounds": [
+        "Manual",
+        "{all}"
+      ]
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "action": "sniff"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 53
+          },
+          {
+            "protocol": "dns"
+          }
+        ],
+        "action": "hijack-dns"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "Direct"
+      },
+      {
+        "clash_mode": "Global",
+        "outbound": "Manual"
+      },
+      {
+        "clash_mode": "Direct",
+        "outbound": "Direct"
+      },
+      {
+        "protocol": "bittorrent",
+        "outbound": "Direct"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 853
+          },
+          {
+            "network": "udp",
+            "port": 443
+          },
+          {
+            "protocol": "stun"
+          },
+          {
+            "rule_set": [
+              "geosite-category-ads-all",
+              "geosite-openai@ads"
+            ]
+          }
+        ],
+        "action": "reject"
+      },
+      {
+        "domain_suffix": [
+          "ghproxy.net",
+          "tt050.space",
+          "tz034.space",
+          "tztz074.space",
+          "775022.xyz",
+          "m.libahao.com"
+        ],
+        "outbound": "Direct"
+      },
+      {
+        "rule_set": "geosite-bilibili@!cn",
+        "outbound": "Bilibili@!cn"
+      },
+      {
+        "rule_set": [
+          "geosite-microsoft@cn",
+          "geosite-google@cn",
+          "geosite-private",
+          "geosite-cn"
+        ],
+        "outbound": "Direct"
+      },
+      {
+        "rule_set": "geosite-microsoft",
+        "outbound": "Microsoft"
+      },
+      {
+        "rule_set": "geosite-google",
+        "outbound": "Google"
+      },
+      {
+        "rule_set": "geosite-telegram",
+        "outbound": "Telegram"
+      },
+      {
+        "rule_set": "geosite-openai",
+        "outbound": "ChatGPT"
+      },
+      {
+        "action": "resolve",
+        "match_only": true
+      },
+      {
+        "rule_set": "geoip-cn",
+        "outbound": "Direct"
+      },
+      {
+        "rule_set": "geoip-telegram",
+        "outbound": "Telegram"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "geosite-category-ads-all",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/category-ads-all.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-geolocation-cn",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/geolocation-cn.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-bilibili@!cn",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/bilibili@!cn.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-google@cn",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/google@cn.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-google",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/google.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-microsoft@cn",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/microsoft@cn.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-microsoft",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/microsoft.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-openai@ads",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/openai@ads.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-openai",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/openai.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-telegram",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/telegram.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-private",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/private.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-cn",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/sing-geosite/rule-set/cn.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-telegram",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/release/srs/telegram.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-cn",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/nekolsd/geoip/release/srs/cn.srs"
+      }
+    ],
+    "final": "Manual",
+    "auto_detect_interface": true,
+    "default_domain_resolver": "Local"
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true,
+      "store_rdrc": true
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "ui",
+      "external_ui_download_url": "https://github.com/Zephyruso/zashboard/archive/gh-pages.zip",
+      "external_ui_download_detour": "Manual",
+      "default_mode": "Rule"
+    }
+  }
+}
